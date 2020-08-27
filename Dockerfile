@@ -1,5 +1,4 @@
 COPY server.js /var/www/
-COPY moveBundle.js /var/www/moveBundle.js
 COPY dist/ /var/www/dist/
 COPY public/ /var/www/public/
 COPY manifest.json /var/www/manifest.json

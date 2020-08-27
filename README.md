@@ -23,7 +23,7 @@ yarn lint
 
 ### 部署流程
 ```
-1.构建完成部署到服务器后，需要把server.js和moveBundle.js 复制到服务端放dist的目录
+1.构建完成部署到服务器后，需要把server.js复制到服务端放dist的目录
 2.需要把/src/index.template.html 复制到dist/src/index.template.html
 3.之后在dist目录下执行node server.js即可启动项目服务（参考Dockerfile）
 ```
