@@ -1,0 +1,75 @@
+{
+  "name": "vue-ssr-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "lint": "vue-cli-service lint",
+    "build": "npm run build:server && npm run build:client",
+    "build:client": "better-npm-run build:client",
+    "build:server": "better-npm-run build:server",
+    "start": "better-npm-run serve"
+  },
+  "betterScripts": {
+    "build:client": {
+      "command": "vue-cli-service build && node moveBundle.js",
+      "env": {
+        "NODE_ENV": "production",
+        "VUE_ENV": "client"
+      }
+    },
+    "build:server": {
+      "command": "vue-cli-service build --mode server && node moveBundle.js",
+      "env": {
+        "NODE_ENV": "production",
+        "VUE_ENV": "server"
+      }
+    },
+    "serve": {
+      "command": "node server",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": 9004
+      }
+    }
+  },
+  "dependencies": {
+    "better-npm-run": "^0.1.1",
+    "core-js": "^3.6.5",
+    "koa": "^2.13.0",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "lru-cache": "^6.0.0",
+    "path": "^0.12.7",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vue-server-renderer": "^2.6.11",
+    "vuex": "^3.4.0",
+    "vuex-router-sync": "^5.0.0",
+    "webpack-node-externals": "^2.5.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "less-loader": "^6.2.0",
+    "lint-staged": "^9.5.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
+}
