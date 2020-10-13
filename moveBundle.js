@@ -16,9 +16,9 @@ function handleMove(oldfile, newFile) {
 if (process.env.VUE_ENV === 'server') {
   // 先build服务端的时候把文件保存出来
   console.log('开始保存bundle文件');
-  handleMove(resolve('./dist/vue-ssr-server-bundle.json'), './vue-ssr-server-bundle.json');
+  handleMove('./dist/vue-ssr-server-bundle.json', './vue-ssr-server-bundle.json');
 } else {
   // 把复制出来的文件迁回去
   console.log('开始迁回bundle文件');
-  handleMove(resolve('./vue-ssr-server-bundle.json'), './dist/vue-ssr-server-bundle.json');
+  handleMove('./vue-ssr-server-bundle.json', './dist/vue-ssr-server-bundle.json');
 }

@@ -1,9 +1,10 @@
 {
-  "name": "vue-ssr-demo",
+  "name": "app-hybrid-active-ui-2.0",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "dev": "concurrently \"vue-cli-service serve\" \"npm run dev:server\"",
+    "dev:server": "better-npm-run dev:server",
     "lint": "vue-cli-service lint",
     "build": "npm run build:server && npm run build:client",
     "build:client": "better-npm-run build:client",
@@ -11,6 +12,13 @@
     "start": "better-npm-run serve"
   },
   "betterScripts": {
+    "dev:server": {
+      "command": "node server",
+      "env": {
+        "PORT": 9004,
+        "VUE_ENV": "server"
+      }
+    },
     "build:client": {
       "command": "vue-cli-service build && node moveBundle.js",
       "env": {
@@ -34,18 +42,24 @@
     }
   },
   "dependencies": {
+    "@koa/router": "^9.4.0",
+    "axios": "^0.20.0",
     "better-npm-run": "^0.1.1",
+    "concurrently": "^5.3.0",
     "core-js": "^3.6.5",
     "koa": "^2.13.0",
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
     "lru-cache": "^6.0.0",
+    "memory-fs": "^0.5.0",
     "path": "^0.12.7",
+    "serialize-javascript": "^4.0.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-server-renderer": "^2.6.11",
     "vuex": "^3.4.0",
     "vuex-router-sync": "^5.0.0",
+    "webpack": "^4.44.2",
     "webpack-node-externals": "^2.5.1"
   },
   "devDependencies": {
@@ -56,6 +70,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
     "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^6.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",

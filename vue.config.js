@@ -1,30 +1,31 @@
+const path = require('path');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const nodeExternals = require('webpack-node-externals');
+const CompressionPlugin = require('compression-webpack-plugin');
+
+const resolve = dir => path.join(__dirname, dir);
+// 静态资源gzip
+const productionGzipExtensions = /\.(js|css)(\?.*)?$/i;
 
 const { env } = process;
 const isServer = env.VUE_ENV === 'server';
-const isProd = env.NODE_ENV === 'production'; // 构建时正式模式
-
-if (!isProd) {
-  module.exports = {
-    lintOnSave: true,
-    publicPath: '/',
-    outputDir: 'dist',
-    devServer: {
-      disableHostCheck: true,
-    },
-  };
-  return;
-}
+const isProd = env.NODE_ENV === 'production';
+const target = isServer ? 'server' : 'client';
 
 module.exports = {
   lintOnSave: false,
   publicPath: '/act', // 设置静态资源目录
   outputDir: 'dist',
+  devServer: {
+    disableHostCheck: true,
+  },
+  css: {
+    extract: true,
+  },
   configureWebpack: {
     // 将 entry 指向应用程序的 server / client 文件
-    entry: `./src/entry-${env.VUE_ENV}.js`,
+    entry: `./src/entry-${target}.js`,
     devtool: 'eval',
     // 这允许 webpack 以 Node 适用方式(Node-appropriate fashion)处理动态导入(dynamic import)，
     // 并且还会在编译 Vue 组件时，
@@ -58,5 +59,19 @@ module.exports = {
     config.plugins.delete('html');
     config.plugins.delete('preload');
     config.plugins.delete('prefetch');
+    // 设置别名
+    config.resolve.alias.set('@', resolve('src'));
+    // 压缩资源
+    if (isProd) {
+      config.plugin('compressionPlugin')
+        .use(new CompressionPlugin({
+          filename: '[path][base].gz',
+          algorithm: 'gzip',
+          test: productionGzipExtensions,
+          threshold: 0,
+          minRatio: 0.8,
+          deleteOriginalAssets: false,
+        }));
+    }
   },
 };
