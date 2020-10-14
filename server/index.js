@@ -3,6 +3,8 @@ const Koa = require('koa');
 const path = require('path');
 const koaStatic = require('koa-static');
 const mount = require('koa-mount');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const k2c = require('koa2-connect');
 
 const app = new Koa();
 
@@ -14,9 +16,24 @@ const serve = (p, cache) => koaStatic(resolve(p), {
   gzip: true,
 });
 
-app.use(serve('../public', true));
-app.use(serve('../dist', true));
-app.use(mount('/act/', serve('../dist', true)));
+if (!isProd) {
+  // 开发模式下把请求的资源代理到vue-cli-services启动的服务上
+  app.use(async (ctx, next) => {
+    if (ctx.url.includes('.')) { // 匹配可能是资源的请求url
+      // eslint-disable-next-line no-param-reassign
+      ctx.respond = false;
+      await k2c(createProxyMiddleware({
+        target: 'http://localhost:8080',
+      }))(ctx, next);
+      return;
+    }
+    await next();
+  });
+} else {
+  app.use(serve('../public', true));
+  app.use(serve('../dist', true));
+  app.use(mount('/act/', serve('../dist', true)));
+}
 
 // 路由
 const router = !isProd ? require('./ssr.dev') : require('./ssr');
