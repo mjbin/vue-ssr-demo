@@ -1,22 +1,22 @@
 # vue-ssr-demo
 
-## Project setup
+## 安装依赖
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 开发模式
 ```
-yarn serve
+yarn dev
 ```
 
-### Compiles and minifies for production
+### 生产模式
 ```
 yarn build
 yarn start
 ```
 
-### Lints and fixes files
+### 代码规范
 ```
 yarn lint
 ```
