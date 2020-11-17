@@ -47,7 +47,7 @@ app.use(mount('/act/', serve('dist')));
 > vue-cli构建的项目建议用.env环境变量来配置
 
 ## 项目缺点
-* 开发模式下的hmr暂时无法由koa服务来更新
+* ~~开发模式下的hmr暂时无法由koa服务来更新~~
 * ~~开发模式下通过koa来访问vue-cli-services的服务，需要手动补全请求的资源文件和类型，比较繁琐~~，通过开发模式代理资源文件解决
 
 ### Customize configuration
